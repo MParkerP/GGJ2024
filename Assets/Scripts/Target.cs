@@ -19,8 +19,7 @@ public class Target : MonoBehaviour
     [SerializeField]
     private bool upPressed,downPressed,rightPressed,leftPressed;
 
-    [SerializeField]
-    private float inputBuffer;
+    public float inputBuffer;
 
     [SerializeField]
     private bool isRunning = false;

@@ -7,8 +7,7 @@ public class NoteSpawner : MonoBehaviour
 {
     public GameObject notePrefab;
     private Vector2 spawnDirection = Vector2.down;
-    [SerializeField]
-    private float noteSpeed;
+    public float noteSpeed = 0.265f;
     private Vector3 spawnPosition;
 
     public Queue<GameObject> notesSpawned = new Queue<GameObject>();
@@ -16,10 +15,13 @@ public class NoteSpawner : MonoBehaviour
 
     public bool spawning100bpm,spawning150bpm,spawning175bpm = false;
     private float spawnRate100bpm = 0.6f;
+    public float noteSpeed100 = 0.265f;
 
-    private float spawnRate150bpm = 0.9f;
+    private float spawnRate150bpm = 0.4f;
+    public float noteSpeed150 = 0.32f;
 
-    private float spawnRate175bpm = 1.05f;
+    private float spawnRate175bpm = 0.34f;
+    public float noteSpeed175 = 0.29f;
 
 
 
@@ -35,18 +37,10 @@ public class NoteSpawner : MonoBehaviour
 
     public void PauseSpawning()
     {
-        switch (currentBpm)
-        {
-            case "100":
-                spawning100bpm = false;
-                break;
-            case "150":
-                spawning150bpm = false;
-                break;
-            case "175":
-                spawning175bpm = false;
-                break;
-        }
+        StopAllCoroutines();
+        spawning100bpm = false;
+        spawning150bpm = false;
+        spawning175bpm = false;
     }
 
     public void ResumeSpawning()
@@ -55,6 +49,12 @@ public class NoteSpawner : MonoBehaviour
         {
             case "100":
                 startSpawning100bpm();
+                break;
+            case "150":
+                startSpawning150bpm();
+                break;
+            case "175":
+                startSpawning175bpm();
                 break;
         }
     }
@@ -103,7 +103,7 @@ public class NoteSpawner : MonoBehaviour
         while (spawning175bpm)
         {
             spawnNote();
-            yield return new WaitForSeconds(spawnRate175bpm * 2);
+            yield return new WaitForSeconds(spawnRate175bpm*2);
         }
     }
 

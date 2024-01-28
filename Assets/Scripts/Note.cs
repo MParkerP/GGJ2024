@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
 using UnityEngine;
 using Random = System.Random;
 
@@ -43,6 +42,8 @@ public class Note : MonoBehaviour
         if (transform.position.y <= (targetPosition.y - targetOuterRadius))
         {
             GameObject.Destroy(gameObject);
+            target.GetComponent<Target>().setRed();
+            GameObject.Find("MusicManager").GetComponent<MusicManager>().loseHappy();
             spawner.GetComponent<NoteSpawner>().notesSpawned.Dequeue();
             Debug.Log("Miss");
         }

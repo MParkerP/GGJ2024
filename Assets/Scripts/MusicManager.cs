@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
@@ -28,10 +29,12 @@ public class MusicManager : MonoBehaviour
     public Animator PlayerAn;
 
     private bool gameOver = false;
+    private AnimationSounds animationSounds;
 
     private void Start()
     {
         musicSource = GetComponent<AudioSource>();
+        animationSounds = GameObject.Find("SceneAnimation").GetComponent<AnimationSounds>();
         target = GameObject.Find("Target").GetComponent<Target>();
         noteSpawner = GameObject.Find("NoteSpawner").GetComponent<NoteSpawner>();
         SceneAn = GameObject.Find("SceneAnimation").GetComponent<Animator>();
@@ -41,15 +44,19 @@ public class MusicManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            endGame();
+        }
         if (happinessTracker < 0 && !gameOver)
         {
-            loseGame();
+            StartCoroutine(loseGame());
         }
         if (happinessTracker >= happinessThreshhold)
         {
             target.StopAll();
             noteSpawner.clearNotes();
-            happinessTracker = 0.0f;
+            happinessTracker = 50f;
             currentLevel++;
             switch (currentLevel)
             {
@@ -60,12 +67,14 @@ public class MusicManager : MonoBehaviour
                     StartCoroutine(levelUp(easy3));
                     break;
                 case 3:
+                    noteSpawner.noteSpeed = .27f;
                     noteSpawner.difficulty = 2;
                     noteSpawner.currentBpm = "150";
                     StartCoroutine(levelUp(medium1));
                     break;
                 case 4:
                     StartCoroutine(levelUp(medium2));
+                    noteSpawner.noteSpeed = .34f;
                     break;
                 case 5:
                     StartCoroutine(levelUp(medium3));
@@ -73,13 +82,18 @@ public class MusicManager : MonoBehaviour
                 case 6:
                     noteSpawner.difficulty = 3;
                     noteSpawner.currentBpm = "175";
+                    noteSpawner.noteSpeed = .22f;
+                    target.inputBuffer = 0.1f;
+
                     StartCoroutine(levelUp(hard1));
                     break;
                 case 7:
                     StartCoroutine(levelUp(hard2));
+                    noteSpawner.noteSpeed = .20f;
                     break;
                 case 8:
                     StartCoroutine(levelUp(hard3));
+                    noteSpawner.noteSpeed = .22f;
                     break;
                 case 9:
                     endGame();
@@ -105,6 +119,7 @@ public class MusicManager : MonoBehaviour
 
     public void startGame()
     {
+        PlayerAn.SetBool("CanMove", true);
         musicSource.volume = 3f;
         musicSource.clip = easy1;
         musicSource.Play();
@@ -132,10 +147,43 @@ public class MusicManager : MonoBehaviour
 
     private void endGame()
     {
-        musicSource.Stop();
+        StartCoroutine(endGameCR());
     }
 
-    private void loseGame()
+    private IEnumerator endGameCR()
+    {
+        target.StopAll();
+        GameObject.Find("Target").GetComponent<SpriteRenderer>().enabled = false;
+        noteSpawner.clearNotes();
+        musicSource.Stop();
+        noteSpawner.PauseSpawning();
+        SceneAn.SetTrigger("Win");
+        PlayerAn.SetTrigger("Win");
+        StartCoroutine(endGameSounds());
+        PlayerAn.SetBool("Up", false);
+        PlayerAn.SetBool("Down", false);
+        PlayerAn.SetBool("Right", false);
+        PlayerAn.SetBool("Left", false);
+        PlayerAn.SetBool("CanMove", false);
+        //death animation
+        gameOver = true;
+        yield return new WaitForSeconds(13);
+        SceneManager.LoadScene("Title");
+    }
+
+    private IEnumerator endGameSounds()
+    {
+        yield return new WaitForSeconds(2);
+        animationSounds.PlayKingLaugh();
+        yield return new WaitForSeconds(5.5f);
+        animationSounds.PlayGunEquip();
+        yield return new WaitForSeconds(3);
+        animationSounds.PlayGunShot();
+        yield return new WaitForSeconds(.25f);
+        animationSounds.PlaybloodSplat();
+    }
+
+    private IEnumerator loseGame()
     {
         target.StopAll();
         noteSpawner.clearNotes();
@@ -145,7 +193,14 @@ public class MusicManager : MonoBehaviour
         SceneAn.SetBool("KnightKill", true);
         PlayerAn.SetTrigger("Stop");
         PlayerAn.SetBool("KnightDeath",true);
+        PlayerAn.SetBool("Up", false);
+        PlayerAn.SetBool("Down", false);
+        PlayerAn.SetBool("Right", false);
+        PlayerAn.SetBool("Left", false);
+        PlayerAn.SetBool("CanMove", false);
         //death animation
         gameOver = true;
+        yield return new WaitForSeconds(8);
+        SceneManager.LoadScene("Title");
     }
 }
