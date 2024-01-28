@@ -28,6 +28,8 @@ public class Target : MonoBehaviour
     private MusicManager musicManager;
     private AudioSource soundPlayer;
 
+    public Animator PlayerAn;
+
     public AudioClip correctSound, incorrectSound, niceSound;
     private Color originalColor = new Color(1, 1, 1, 0.5f);
 
@@ -35,21 +37,38 @@ public class Target : MonoBehaviour
     {
         musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>();
         soundPlayer = GetComponent<AudioSource>();
+        PlayerAn = GameObject.Find("Player").GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow)){upPressed = true;}
-        if (Input.GetKeyUp(KeyCode.UpArrow)){ StartCoroutine(InputReleaseBuffer("up")); }
+        if (Input.GetKeyDown(KeyCode.UpArrow)){upPressed = true;
+            PlayerAn.SetBool("Up", true);
+        }
+        if (Input.GetKeyUp(KeyCode.UpArrow)){ StartCoroutine(InputReleaseBuffer("up"));
+          
+        }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow)){downPressed = true;}
-        if (Input.GetKeyUp(KeyCode.DownArrow)){ StartCoroutine(InputReleaseBuffer("down")); }
+        if (Input.GetKeyDown(KeyCode.DownArrow)){downPressed = true;
+            PlayerAn.SetBool("Down", true);
+        }
+        if (Input.GetKeyUp(KeyCode.DownArrow)){ StartCoroutine(InputReleaseBuffer("down"));
+          
+        }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) { leftPressed = true; }
-        if (Input.GetKeyUp(KeyCode.LeftArrow)) { StartCoroutine(InputReleaseBuffer("left")); }
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) { leftPressed = true;
+            PlayerAn.SetBool("Left", true);
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow)) { StartCoroutine(InputReleaseBuffer("left"));
+           
+        }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) { rightPressed = true; }
-        if (Input.GetKeyUp(KeyCode.RightArrow)) { StartCoroutine(InputReleaseBuffer("right")); }
+        if (Input.GetKeyDown(KeyCode.RightArrow)) { rightPressed = true;
+            PlayerAn.SetBool("Right", true);
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow)) { StartCoroutine(InputReleaseBuffer("right"));
+           
+        }
 
 
         if ((Input.GetKeyDown(KeyCode.UpArrow)) || (Input.GetKeyDown(KeyCode.DownArrow)) ||
@@ -168,15 +187,19 @@ public class Target : MonoBehaviour
         {
             case "up":
                 upPressed = false;
+                PlayerAn.SetBool("Up", false);
                 break;
             case "down":
                 downPressed = false;
+                PlayerAn.SetBool("Down", false);
                 break;
             case "right":
                 rightPressed = false;
+                PlayerAn.SetBool("Right", false);
                 break;
             case "left":
                 leftPressed = false;
+                PlayerAn.SetBool("Left", false);
                 break;
         }
     }
