@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 public class MusicManager : MonoBehaviour
 {
@@ -50,7 +52,24 @@ public class MusicManager : MonoBehaviour
         }
         if (happinessTracker < 0 && !gameOver)
         {
-            StartCoroutine(loseGame());
+            Random rand = new Random();
+            int deathAnim = rand.Next(0, 4);
+            switch (deathAnim)
+            {
+                case 0:
+                    StartCoroutine(loseGame("PriestKill"));
+                    break;
+                case 1:
+                    StartCoroutine(loseGame("KnightKill"));
+                    break;
+                case 2:
+                    StartCoroutine(loseGame("PrincessKill"));
+                    break;
+                case 3:
+                    StartCoroutine(loseGame("ExecutionerKill"));
+                    break;
+
+            }
         }
         if (happinessTracker >= happinessThreshhold)
         {
@@ -183,16 +202,43 @@ public class MusicManager : MonoBehaviour
         animationSounds.PlaybloodSplat();
     }
 
-    private IEnumerator loseGame()
+    private IEnumerator playerDeath(string deathAnimation)
+    {
+        float playerDeathTimer = 0f;
+        switch (deathAnimation)
+        {
+            case "PriestKill":
+                playerDeathTimer = 3f;
+                break;
+            case "KnightKill":
+                playerDeathTimer = 3f;
+                PlayerAn.SetBool("KnightDeath", true);
+                break;
+            case "PrincessKill":
+                playerDeathTimer = 3f;
+                //PlayerAn.SetBool("PrincessDeath", true);
+                break;
+            case "ExecutionerKill":
+                playerDeathTimer = 3f;
+                break;
+
+        }
+
+        yield return new WaitForSeconds(playerDeathTimer);
+        GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+
+    private IEnumerator loseGame(string deathAnimation)
     {
         target.StopAll();
         noteSpawner.clearNotes();
         musicSource.Stop();
         noteSpawner.PauseSpawning();
         SceneAn.SetTrigger("KingAngry");
-        SceneAn.SetBool("KnightKill", true);
+        SceneAn.SetBool(deathAnimation, true);
+        playerDeath(deathAnimation);
         PlayerAn.SetTrigger("Stop");
-        PlayerAn.SetBool("KnightDeath",true);
         PlayerAn.SetBool("Up", false);
         PlayerAn.SetBool("Down", false);
         PlayerAn.SetBool("Right", false);
