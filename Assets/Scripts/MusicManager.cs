@@ -209,23 +209,31 @@ public class MusicManager : MonoBehaviour
         {
             case "PriestKill":
                 playerDeathTimer = 3f;
+                SceneAn.SetBool(deathAnimation, true);
+                yield return new WaitForSeconds(2.4f);
+                PlayerAn.SetBool("Gone", true);
                 break;
             case "KnightKill":
                 playerDeathTimer = 3f;
+                SceneAn.SetBool(deathAnimation, true);
                 PlayerAn.SetBool("KnightDeath", true);
                 break;
             case "PrincessKill":
                 playerDeathTimer = 3f;
-                //PlayerAn.SetBool("PrincessDeath", true);
+                SceneAn.SetBool(deathAnimation, true);
+                PlayerAn.SetBool("PrincessDeath", true);
                 break;
             case "ExecutionerKill":
                 playerDeathTimer = 3f;
+                yield return new WaitForSeconds(2);
+                SceneAn.SetBool(deathAnimation, true);
+                yield return new WaitForSeconds(1.2f);
+                PlayerAn.SetBool("Gone", true);
                 break;
 
         }
-
         yield return new WaitForSeconds(playerDeathTimer);
-        GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
+        //GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
     }
 
 
@@ -235,18 +243,19 @@ public class MusicManager : MonoBehaviour
         noteSpawner.clearNotes();
         musicSource.Stop();
         noteSpawner.PauseSpawning();
-        SceneAn.SetTrigger("KingAngry");
-        SceneAn.SetBool(deathAnimation, true);
-        playerDeath(deathAnimation);
         PlayerAn.SetTrigger("Stop");
         PlayerAn.SetBool("Up", false);
         PlayerAn.SetBool("Down", false);
         PlayerAn.SetBool("Right", false);
         PlayerAn.SetBool("Left", false);
         PlayerAn.SetBool("CanMove", false);
+        SceneAn.SetTrigger("KingAngry");
+        StartCoroutine(playerDeath(deathAnimation));
+       
+        
         //death animation
         gameOver = true;
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(6);
         SceneManager.LoadScene("Title");
     }
 }
