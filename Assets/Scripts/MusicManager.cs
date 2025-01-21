@@ -50,6 +50,22 @@ public class MusicManager : MonoBehaviour
         {
             endGame();
         }
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            StartCoroutine(loseGame("KnightKill"));
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(loseGame("ExecutionerKill"));
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(loseGame("PriestKill"));
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            StartCoroutine(loseGame("PrincessKill"));
+        }
         if (happinessTracker < 0 && !gameOver)
         {
             Random rand = new Random();
@@ -210,6 +226,7 @@ public class MusicManager : MonoBehaviour
             case "PriestKill":
                 playerDeathTimer = 3f;
                 SceneAn.SetBool(deathAnimation, true);
+                StartCoroutine(animationSounds.PlayPriestDeath());
                 yield return new WaitForSeconds(2.4f);
                 PlayerAn.SetBool("Gone", true);
                 break;
@@ -217,16 +234,19 @@ public class MusicManager : MonoBehaviour
                 playerDeathTimer = 3f;
                 SceneAn.SetBool(deathAnimation, true);
                 PlayerAn.SetBool("KnightDeath", true);
+                StartCoroutine(animationSounds.PlayKnightDeath());
                 break;
             case "PrincessKill":
                 playerDeathTimer = 3f;
                 SceneAn.SetBool(deathAnimation, true);
                 PlayerAn.SetBool("PrincessDeath", true);
+                StartCoroutine(animationSounds.PlayPrincessDeath());
                 break;
             case "ExecutionerKill":
                 playerDeathTimer = 3f;
                 yield return new WaitForSeconds(2);
                 SceneAn.SetBool(deathAnimation, true);
+                StartCoroutine(animationSounds.PlayExecutionerDeath());
                 yield return new WaitForSeconds(1.2f);
                 PlayerAn.SetBool("Gone", true);
                 break;

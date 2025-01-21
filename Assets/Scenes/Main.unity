@@ -247,6 +247,20 @@ MonoBehaviour:
   gunShot: {fileID: 8300000, guid: 5aacd8be03165c14cb92443824a9c93f, type: 3}
   bloodSplat: {fileID: 8300000, guid: 4f87ececb64d42c419f3776c3122be31, type: 3}
   gunEquip: {fileID: 8300000, guid: 9b28cda6383506f4d96a61b903e75db3, type: 3}
+  knightDeath: {fileID: 8300000, guid: accfb68e1f03c3745873e6d9ff07c207, type: 3}
+  shing: {fileID: 8300000, guid: 0f5011d2ba13bc243a95a336bdfd75c6, type: 3}
+  swordPutAway: {fileID: 8300000, guid: 999a626ae64ecb642a173770c8c88cbe, type: 3}
+  lever: {fileID: 8300000, guid: 4708896d37e4a6a43a93c30fc771bac0, type: 3}
+  scrape: {fileID: 8300000, guid: 802c71c67f2d38c42ad3ae49c8fdb312, type: 3}
+  crush: {fileID: 8300000, guid: ad57ca9c73f5a1044a32cf7466279db7, type: 3}
+  bang: {fileID: 8300000, guid: 31114cf102f187d43af6f8e8ca5c331f, type: 3}
+  laser: {fileID: 8300000, guid: 2fae29f987da7b14bba2b5a3cc8cfbf5, type: 3}
+  bell: {fileID: 8300000, guid: 27d11dcf523bc914c9d2bf9ae2198e15, type: 3}
+  fire: {fileID: 8300000, guid: ab4dc0cea4161a7439889aa4c757c7a1, type: 3}
+  kiss: {fileID: 8300000, guid: 67a20636231e1ea44b9a2441f23e9f21, type: 3}
+  blow: {fileID: 8300000, guid: 4e816d21921b7564fa0e18d455a6617e, type: 3}
+  echo: {fileID: 8300000, guid: a52fe0cba3d07dc4581b1b8c9265a2b7, type: 3}
+  fall: {fileID: 8300000, guid: 75245a86b49edb240bd262f96fc846f3, type: 3}
 --- !u!82 &12276054
 AudioSource:
   m_ObjectHideFlags: 0
@@ -985,10 +999,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.120946534
-    y: 0.07880911
-    width: 0.75723046
-    height: 0.84063053
+    x: 0.06873879
+    y: 0.08549222
+    width: 0.8607292
+    height: 0.8290155
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
